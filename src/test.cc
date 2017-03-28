@@ -2,5 +2,6 @@
 #include<numeric>
 using namespace std;
 int main(){
-  cout << accumulate(3 ,3 ) << endl;
+  if(1 < -2 && -1 < 5) cout << "jldsjf" << endl;
+  
 }
