@@ -33,25 +33,25 @@ void atoms :: emission(){
     //first check if there is receiving ground state avaliable
     
     // Decay back to initial ground state F
-    std::cout << mf << "," <<  initGroundStateF << "," << targetGroundStateF  << std::endl;
+    //std::cout << mf << "," <<  initGroundStateF << "," << targetGroundStateF  << std::endl;
     
     if(-initGroundStateF <= (mf + 1) && (mf + 1) <= initGroundStateF){
       // probablity of emitting sigma+ photon, index refer to transitionStrength.h
-      f1SigmaPlus = Li7DLine.D1.F1.sigmaMinus[pumpExcitedStateF - 1][mf + 1 + pumpExcitedStateF];
-      std::cout << "===================\n" << f1SigmaPlus << std::endl;
+      f1SigmaPlus = Li7DLine.D1.F1.sigmaMinus[pumpExcitedStateF - 1][mf + 1 + initGroundStateF];
+      //std::cout << "===================\n" << f1SigmaPlus << std::endl;
     }
     else
       f1SigmaPlus = 0.;
 
     if(-initGroundStateF <= mf && mf <= initGroundStateF)
       // probablity of emitting pi photon
-      f1Pi = Li7DLine.D1.F1.pi[pumpExcitedStateF - 1][mf + pumpExcitedStateF];
+      f1Pi = Li7DLine.D1.F1.pi[pumpExcitedStateF - 1][mf + initGroundStateF];
     else
       f1Pi = 0.;
 
     if(-initGroundStateF <= (mf - 1) && (mf - 1)<= initGroundStateF)
       // probabilty of emitting sigma- photon
-      f1SigmaMinus = Li7DLine.D1.F1.sigmaPlus[pumpExcitedStateF - 1][mf - 1 + pumpExcitedStateF];
+      f1SigmaMinus = Li7DLine.D1.F1.sigmaPlus[pumpExcitedStateF - 1][mf - 1 + initGroundStateF];
     else
       f1SigmaMinus = 0.;
 
@@ -60,29 +60,29 @@ void atoms :: emission(){
     // Decay back to targetGroundStateF
     if(-targetGroundStateF <= (mf + 1) && (mf + 1) <= targetGroundStateF)
       // probablity of emitting sigma+ photon, index refer to transitionStrength.h
-      f2SigmaPlus = Li7DLine.D1.F2.sigmaMinus[pumpExcitedStateF - 1][mf + 1 + pumpExcitedStateF];
+      f2SigmaPlus = Li7DLine.D1.F2.sigmaMinus[pumpExcitedStateF - 1][mf + 1 + targetGroundStateF];
     else
       f2SigmaPlus = 0.;
 
     if(-targetGroundStateF <= mf && mf  <= targetGroundStateF)
       // probablity of emitting pi photon
-      f2Pi = Li7DLine.D1.F2.pi[pumpExcitedStateF - 1][mf + pumpExcitedStateF];
+      f2Pi = Li7DLine.D1.F2.pi[pumpExcitedStateF - 1][mf + targetGroundStateF];
     else
       f2Pi = 0.;
 
     if(-targetGroundStateF <= (mf - 1) && (mf -1)<= targetGroundStateF)
       // probabilty of emitting sigma- photon
-      f2SigmaMinus = Li7DLine.D1.F2.sigmaPlus[pumpExcitedStateF - 1][mf - 1 + pumpExcitedStateF];
+      f2SigmaMinus = Li7DLine.D1.F2.sigmaPlus[pumpExcitedStateF - 1][mf - 1 + targetGroundStateF];
     else
       f2SigmaMinus = 0.;
 
     // Check if the probablities for spontaneous decay make sence
     // All probablities should add up to 1
     probSum = f1SigmaPlus+ f1SigmaMinus+ f1Pi+f2SigmaPlus+ f2SigmaMinus+ f2Pi;
-    std::cout << f1SigmaPlus << ","<< f1SigmaMinus << "," <<  f1Pi+f2SigmaPlus << "," << f2SigmaMinus << "," << f2SigmaMinus << "," << f2Pi << std::endl;
+    //std::cout << f1SigmaPlus << ","<< f1SigmaMinus << "," <<  f1Pi << "," << f2SigmaPlus << "," << f2SigmaMinus << "," << f2SigmaMinus << "," << f2Pi << std::endl;
     if(probSum != 1){
-      //std::cout << "------\nTransition strength value wrong(sum != 1)\n------" << std::endl;
-      //std::cout << "probSum = " << probSum << std::endl;
+      std::cout << "------\nTransition strength value wrong(sum != 1)\n------" << std::endl;
+      std::cout << "probSum = " << probSum << std::endl;
     }
 
     randNum = rand()%1000 / 1000.0;
