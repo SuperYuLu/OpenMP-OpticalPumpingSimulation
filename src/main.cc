@@ -1,4 +1,6 @@
 #include<iostream>
+#include<fstream>
+#include<sstream>
 //#include<main.h>
 #include "atoms.h"
 //#include "setValue.h"
@@ -7,7 +9,6 @@ int main(){
   atoms atom[numOfAtoms];
   int numInitState[numOfCycles][2 * initGroundStateF + 1];
   int numTargetState[numOfCycles][2 * targetGroundStateF + 1];
-  
   for(int i = 0; i < numOfCycles; i++){
     
       for(int j = 0; j < numOfAtoms; j++){
@@ -52,4 +53,21 @@ int main(){
       }
       //std::cout << "Cycle :" << i << std::endl;   
   }
+  // Saving data to file
+
+  std::string path="../dat/";
+  std::string fileName1="numInitState.csv";
+  std::string fileName2="numTargetState.csv";
+
+  std::ofstream file1;
+  std::ofstream file2;
+
+  file1.open(path + fileName1);
+  file2.open(path + fileName2);
+
+  for(int k = 0; k < numOfCycles; k++){
+    file1 << numInitState[k][0] << ", " << numInitState[k][1] << ", " << numInitState[k][2] << std::endl;
+    file2 << numTargetState[k][0] << ", " << numTargetState[k][1] << ", " << numTargetState[k][2] << ", " << numTargetState[k][3] << ", " << numTargetState[k][4] << ", " << numTargetState[k][0] << std::endl;
+  }
+   
 }
