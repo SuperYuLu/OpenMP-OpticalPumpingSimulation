@@ -1,32 +1,35 @@
 #include<iostream>
-#include<cstdlib>
-#include<ctime>
+//#include<cstdlib>
 #include "setValue.h"
 #include "transitionStrength.h"
 class atoms{
 public:
+  int l;
   int f;
   int mf;
   void pump(int);
-  void emission();
+  void emission(float);
 };
 
 // polarization = -1, 0, 1 for sigma-, pi, sigma+ polarization
 void atoms :: pump(int polarization){
-  if(-pumpExcitedStateF < (mf + polarization) && (mf + polarization) < pumpExcitedStateF) //check if recieving state avaliable
-    {
-      f = pumpExcitedStateF;
-      mf = mf + polarization;
-    }
+  if(f == 1 && l == 0){
+    if((-pumpExcitedStateF <= (mf + polarization)) && ((mf + polarization) <= pumpExcitedStateF)) //check if recieving state avaliable
+      {
+	f = pumpExcitedStateF;
+	l = 1;
+	mf = mf + polarization;
+      }
   
+  }
 }
 
-void atoms :: emission(){
+void atoms :: emission(float randNum){
   double f1SigmaPlus, f1SigmaMinus, f1Pi, f2SigmaPlus, f2SigmaMinus, f2Pi, probSum;
   //float randomGen();
-  float randNum;
-  srand(time(0));
-  if(f == pumpExcitedStateF){ // Only excited states can decay
+ 
+  
+  if(f == pumpExcitedStateF && l == 1){ // Only excited states can decay
   
     
     // Decay is inverse of pumping.
@@ -85,36 +88,44 @@ void atoms :: emission(){
       std::cout << "probSum = " << probSum << std::endl;
     }
 
-    randNum = rand()%1000 / 1000.0;
+    
+    
     if (randNum <= f1SigmaPlus)
       {
 	f = 1;
+	l = 0;
 	mf = mf + 1;
       }
     else if(randNum <= (f1SigmaPlus + f1Pi))
       {
 	f = 1;
+	l = 0;
 	mf = mf;
       }
     else if(randNum <= (f1SigmaPlus + f1SigmaMinus + f1Pi))
       {
 	f = 1;
+	l = 0;
 	mf = mf -1;
       }
     else if(randNum <= (f2SigmaPlus + f1SigmaPlus + f1SigmaMinus + f1Pi))
       {
 	f = 2;
+	l = 0;
 	mf = mf  + 1;
       }
     else if (randNum <= (f2Pi + f2SigmaPlus + f1SigmaPlus + f1SigmaMinus + f1Pi))
       {
 	f = 2;
+	l = 0;
 	mf = mf;
       }
     else
       {
 	f = 2;
+	l = 0;
 	mf = mf -1;
       }
   }
 }
+

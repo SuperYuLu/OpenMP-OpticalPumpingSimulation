@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstdlib>
 #include<fstream>
 #include<sstream>
 //#include<main.h>
@@ -9,11 +10,14 @@ int main(){
   atoms atom[numOfAtoms];
   int numInitState[numOfCycles][2 * initGroundStateF + 1];
   int numTargetState[numOfCycles][2 * targetGroundStateF + 1];
+  float randNum;
+  srand(112);
   for(int i = 0; i < numOfCycles; i++){
     
       for(int j = 0; j < numOfAtoms; j++){
 	if(i == 0){
 	  atom[j].f = initGroundStateF;
+	  atom[j].l = 0;
 	  switch(j%3){
 	  case 0 : atom[j].mf = -1;
 	    break;
@@ -22,10 +26,13 @@ int main(){
 	  case 2 : atom[j].mf = 1;
 	    break;
 	  }
+	 
 	  //std::cout << "mf: " << atom[j].mf << std::endl;
 	}
+	
+	randNum = rand()%1000 / 1000.0;
 	atom[j].pump(1);
-	atom[j].emission();
+	atom[j].emission(randNum);
 	if(atom[j].f == initGroundStateF){
 	  switch(atom[j].mf){
 	  case -1 : numInitState[i][0] += 1;
