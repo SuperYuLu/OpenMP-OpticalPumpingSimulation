@@ -8,12 +8,25 @@ public:
   int f;
   int mf;
   void pump(int);
+  void repump(int);
   void emission(float);
 };
 
 // polarization = -1, 0, 1 for sigma-, pi, sigma+ polarization
 void atoms :: pump(int polarization){
   if(f == 1 && l == 0){
+    if((-pumpExcitedStateF <= (mf + polarization)) && ((mf + polarization) <= pumpExcitedStateF)) //check if recieving state avaliable
+      {
+	f = pumpExcitedStateF;
+	l = 1;
+	mf = mf + polarization;
+      }
+  
+  }
+}
+
+void atoms :: repump(int polarization){
+  if(f == 2 && l == 0){
     if((-pumpExcitedStateF <= (mf + polarization)) && ((mf + polarization) <= pumpExcitedStateF)) //check if recieving state avaliable
       {
 	f = pumpExcitedStateF;

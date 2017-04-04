@@ -13,11 +13,11 @@ if os.path.exists(folder):
     plt.plot(timeX, data2D[:,0],'*', label = 'm=-1')
     plt.plot(timeX, data2D[:,1],'*', label = 'm=-0')
     plt.plot(timeX, data2D[:,2],'*', label = 'm=1')
-    plt.title('Magnetic field distribution at time')
-    plt.xlabel('Position [mm]')
-    plt.ylabel('Magnetic field [T]')
+    plt.title('Ground State F = 1 hyperfine states')
+    plt.xlabel('number of emission cycles')
+    plt.ylabel('Population')
     plt.legend()
-    
+    p1.savefig(folder + file1[:-4] + '.png', dpi=150)
     
     
     #print("--- Plot saved in :  " + folder + f[:-4] +'.png ---')
@@ -33,9 +33,9 @@ if os.path.exists(folder):
     plt.plot(timeX, data2[:,2],'*', label = 'm=0')
     plt.plot(timeX, data2[:,3],'*', label = 'm=1')
     plt.plot(timeX, data2[:,4],'*', label = 'm=2')
-    plt.title('Magnetic field distribution at time')
-    plt.xlabel('Position [mm]')
-    plt.ylabel('Magnetic field [T]')
+    plt.title('Ground State F = 2 hyperfine states')
+    plt.xlabel('number of emission cycles')
+    plt.ylabel('Population')
     plt.legend()
     p2.savefig(folder + file1[:-4] + '.png', dpi=150)
     plt.show()

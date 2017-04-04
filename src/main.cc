@@ -32,6 +32,7 @@ int main(){
 	
 	randNum = rand()%1000 / 1000.0;
 	atom[j].pump(1);
+	atom[j].repump(1);
 	atom[j].emission(randNum);
 	if(atom[j].f == initGroundStateF){
 	  switch(atom[j].mf){
