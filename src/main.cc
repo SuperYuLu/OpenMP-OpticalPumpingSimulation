@@ -5,8 +5,40 @@
 //#include<main.h>
 #include "atoms.h"
 //#include "setValue.h"
-//============Problem, transition prob doesn't sum up to 1=============
+
 int main(){
+  int numOfCycles = (int)(totTime / tStep);
+  double groundStatesPop[numOfCycles][8];
+  double excitedStatesPop[numOfCycles][2 * excitedStateF + 1];
+  double decayMatrix[2 * excitedStateF + 1][8]; // shape: (2F' + 1) x 8
+
+  // int **pumpMatrix; // shape 3 x (2F' + 1)
+  // int **repumpMatrix; // shape 5 x (2F' + 1)
+  // for(int i = 0; i < 3; i++) pumpMatrix[i] = new int[2 * excitedStateF + 1];
+  // for(int i = 0; i < 5; i++) repumpMatrix[i]  = new int[2 * excitedStateF + 1];
+
+  int (*pumpMatrix)[2 * excitedStateF + 1];
+  int (*decayMatrix)[2 * excitedStateF + 1];
+
+  if(excitedStateF == 1) pumpMatrix = D1Trans.F11;
+  else pumpMatrix = D1Trans.F12;
+
+  decayMatrix = calSpontEmission(excitedStateF); //maybe wrong, function return **
+	    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
   atoms atom[numOfAtoms];
   int numInitState[numOfCycles][2 * initGroundStateF + 1];
   int numTargetState[numOfCycles][2 * targetGroundStateF + 1];

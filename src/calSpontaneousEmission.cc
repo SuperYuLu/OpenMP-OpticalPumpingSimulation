@@ -8,12 +8,11 @@
 // Jonathan Gillot, Alexandre Gauguet, Matthias B¨uchner, Jacques Vigu´e. Optical pumping
 // of a lithium atomic beam for atom interferometry. The European Physical Journal D, EDP
 // Sciences, 2013, 67, pp.263. .
-e
+
 double** calSpontEmission(int excitedF){
   int numExictedMf, mfExcited, mfGroundF1, mfGroundF2, sum, count;
   double **A;
   numExictedMf = 2 * excitedF - 1;
-  int a[2][3] = {{1,2,3},{3,2,1}};
   for(int i = 0; i < numExictedMf; i++){ // for each mf'
     A[i] = new double[8];
     mfExcited = -excitedF + i;  // mf' for excited states;
@@ -38,7 +37,7 @@ double** calSpontEmission(int excitedF){
     }
 
     
-    for(int j = 0; j < 8; j++){
+    for(int j = 0; j < 8; j++){ // j for each ground state mf, 0~2 for F=1, 3~8 for F = 2
       if(excitedF == 1){ // decay from F' = 1
 	if(j < 3 ) // decay to F=1 ground state
 	  A[i][j] = (double)D1Trans.F11[j][-excitedF + i] / (double)sum * gamma;
@@ -53,5 +52,5 @@ double** calSpontEmission(int excitedF){
       }
     }
   }
-  return A;
+  return A; // A spontaneouse matrix, dimension mxn =  (2F' + 1) x 8
 }
