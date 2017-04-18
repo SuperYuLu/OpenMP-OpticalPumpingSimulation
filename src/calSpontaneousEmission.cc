@@ -8,7 +8,7 @@
 // Jonathan Gillot, Alexandre Gauguet, Matthias B¨uchner, Jacques Vigu´e. Optical pumping
 // of a lithium atomic beam for atom interferometry. The European Physical Journal D, EDP
 // Sciences, 2013, 67, pp.263. .
-
+e
 double** calSpontEmission(int excitedF){
   int numExictedMf, mfExcited, mfGroundF1, mfGroundF2, sum, count;
   double **A;
