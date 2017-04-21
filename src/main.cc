@@ -3,28 +3,37 @@
 #include<fstream>
 #include<sstream>
 //#include<main.h>
-#include "atoms.h"
-//#include "setValue.h"
+#include "setValue.h"
 
 int main(){
   int numOfCycles = (int)(totTime / tStep);
-  double groundStatesPop[numOfCycles][8];
-  double excitedStatesPop[numOfCycles][2 * excitedStateF + 1];
+  double groundStatesPop[numOfCycles][8] = 0;
+  double excitedStatesPop[numOfCycles][2 * excitedStateF + 1] = 0;
   double decayMatrix[2 * excitedStateF + 1][8]; // shape: (2F' + 1) x 8
-
+  double exciteMatrix[8][2 * exciteStateF + 1];
   // int **pumpMatrix; // shape 3 x (2F' + 1)
   // int **repumpMatrix; // shape 5 x (2F' + 1)
   // for(int i = 0; i < 3; i++) pumpMatrix[i] = new int[2 * excitedStateF + 1];
   // for(int i = 0; i < 5; i++) repumpMatrix[i]  = new int[2 * excitedStateF + 1];
 
   int (*pumpMatrix)[2 * excitedStateF + 1];
+  int (*repumpMatrix)[2 * excitedStateF + 1];
   int (*decayMatrix)[2 * excitedStateF + 1];
 
-  if(excitedStateF == 1) pumpMatrix = D1Trans.F11;
-  else pumpMatrix = D1Trans.F12;
-
+  if(excitedStateF == 1){
+    pumpMatrix = D1Trans.F11;
+    repumpMatrix = D1Trans.F21;
+  }
+  else{
+    pumpMatrix = D1Trans.F12;
+    repumpMatrix = D1Trans.F22;
+  }
+  
   decayMatrix = calSpontEmission(excitedStateF); //maybe wrong, function return **
-	    
+  //initializeStates();
+  for(int i = 0; i < 8; i++) groundStatesPop[0][i] = 0.125;
+  
+  //
 }
 
 
