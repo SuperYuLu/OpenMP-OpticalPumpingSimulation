@@ -11,7 +11,7 @@
 
 double** calSpontEmission(int excitedF){
   int numExictedMf, mfExcited, mfGroundF1, mfGroundF2, sum, count;
-  double **A;
+  double **A; // dim :(2F' + 1) x 8
   numExictedMf = 2 * excitedF - 1;
   for(int i = 0; i < numExictedMf; i++){ // for each mf'
     A[i] = new double[8];

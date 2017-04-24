@@ -1,3 +1,20 @@
+// main.cc --- 
+// 
+// Filename: main.cc
+// Description: 
+//     Main program to calculation the optical pumping process
+//     for 7Li D1 Line
+// Author:    Yu Lu
+// Email:     yulu@utexas.edu
+// Github:    https://github.com/SuperYuLu 
+// 
+// Created: Sun Apr 23 22:28:03 2017 (-0500)
+// Version: 0.1
+// Last-Updated: Sun Apr 23 23:41:07 2017 (-0500)
+//           By: yulu
+//     Update #: 17
+// 
+
 #include<iostream>
 #include<cstdlib>
 #include<fstream>
@@ -19,7 +36,8 @@ int main(){
   int (*pumpMatrix)[2 * excitedStateF + 1];
   int (*repumpMatrix)[2 * excitedStateF + 1];
   int (*decayMatrix)[2 * excitedStateF + 1];
-
+  int exciteMatrix[8][2 * excitedStateF + 1];
+  int decayMatrixTrans[8][2 * excitedStateF + 1];
   if(excitedStateF == 1){
     pumpMatrix = D1Trans.F11;
     repumpMatrix = D1Trans.F21;
@@ -28,12 +46,33 @@ int main(){
     pumpMatrix = D1Trans.F12;
     repumpMatrix = D1Trans.F22;
   }
-  
+
+  //Combine the pump and repump matix in to one
+  for(int i = 0; i < 8; i++){
+    for(int j = 0; j < 2 * excitedStateF + 1; j++){
+      if(i < 3) exciteMatrix[i][j] = pumpMatrix[i][j];
+      else exciteMatrix[i][j] = repumpMatrix[i][j];
+    }
+  }
+
+  // Transpose decayMatrix
   decayMatrix = calSpontEmission(excitedStateF); //maybe wrong, function return **
+  for(int i = 0; i < 8; i++)
+    for(int j = 0; j < (2 * excitedStateF + 1); j++)
+      decayMatrixTrans[i][j] = excited[j][i]; // 8 X (2F' + 1)
+  
   //initializeStates();
   for(int i = 0; i < 8; i++) groundStatesPop[0][i] = 0.125;
+
   
-  //
+  // =================> Check here, not finished <=============================
+  for(int i = 0; i < numOfCycles; i++){ // time loop
+    for(int j = 0; j < 8 j++{ // gound hpf states 
+	for(int k = 0; k < (2 * excitedStateF + 1); k++){ // excited hpf states
+	  excitedStatePop[i + 1][j] =\
+	    groundStatesPop[i][j] * exciteMatrix[j][k] * tStep
+	    - exciteMatrix[i][j] * decayMatrixTrans[j][k] * tStep;
+	  groundStatesPop[i + 1][j] = - groundStatesPop[i][j] * [j][sum] + excitedStatePop[i][
 }
 
 
