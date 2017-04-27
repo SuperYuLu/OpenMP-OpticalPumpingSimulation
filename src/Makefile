@@ -5,16 +5,17 @@ CFLAGS = -c
 
 #Files
 EXE = run
-SRCS = main.cc
+SRCS = main.cc calSpontaneousEmission.cc
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
-HEADS = atoms.h setValue.h transitionStrength.h
+HEADS = setValue.h transitionStrength.h main.h
 
 #Rules
 $(EXE): $(OBJS)
 	$(CC) $^ -o $@
-main.o: main.cc atoms.h setValue.h transitionStrength.h
+calSpontaneousEmission.o: calSpontaneousEmission.cc setValue.h transitionStrength.h
 	$(CC) $(CFLAGS) $<
-
+main.o: main.cc main.h setValue.h transitionStrength.h
+	$(CC) $(CFLAGS) $<
 #Phony targets
 clean:
 	rm *.o *~
