@@ -1,5 +1,6 @@
 #ifndef __MAIN_H_INCLUDED__
 #define __MAIN_H_INCLUDED__
-double** calSpontEmission(int excitedF);
+#include "transitionStrength.h"
+double** calSpontEmission(int excitedF, Li7D1Trans D1Trans);
 
 #endif

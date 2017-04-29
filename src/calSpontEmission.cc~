@@ -1,5 +1,22 @@
+// calSpontaneousEmission.cc --- 
+// 
+// Filename: calSpontaneousEmission.cc
+// Description: 
+// 
+// Author:    Yu Lu
+// Email:     yulu@utexas.edu
+// Github:    https://github.com/SuperYuLu 
+// 
+// Created: Sat Apr 29 11:34:27 2017 (-0500)
+// Version: 
+// Last-Updated: Sat Apr 29 12:13:18 2017 (-0500)
+//           By: yulu
+//     Update #: 4
+// 
+
+
 #include "transitionStrength.h"
-#include<cstdio>
+#include <cstdio>
 #include "setValue.h"
 // Calculate spontaneous emission Einstein factor for hpf states
 // Based on the relative transition strenght and the fact that
@@ -9,7 +26,7 @@
 // of a lithium atomic beam for atom interferometry. The European Physical Journal D, EDP
 // Sciences, 2013, 67, pp.26
 
-;
+
 double** calSpontEmission(int excitedF){
   int numExictedMf, mfExcited, mfGroundF1, mfGroundF2, sum, count;
   double **A; // dim :(2F' + 1) x 8

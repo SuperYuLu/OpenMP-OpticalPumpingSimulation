@@ -10,24 +10,27 @@
 // 
 // Created: Sun Apr 23 22:28:03 2017 (-0500)
 // Version: 0.1
-// Last-Updated: Thu Apr 27 11:15:12 2017 (-0500)
+// Last-Updated: Sat Apr 29 14:44:16 2017 (-0500)
 //           By: yulu
-//     Update #: 60
+//     Update #: 148
 // 
 
-#include<iostream>
-#include<cstdlib>
-#include<fstream>
-#include<sstream>
+#include <iostream>
+//#include <string>
+#include <cstdlib>
+#include <fstream>
+//#include <sstream>
 #include "main.h"
 #include "setValue.h"
 #include "transitionStrength.h"
 
 
-int main(){
+int main(int argc, char *argv[]){
   int numOfCycles = (int)(totTime / tStep);
   double groundStatesPop[numOfCycles][8] = {0.};
   double excitedStatesPop[numOfCycles][2 * excitedStateF + 1] = {0.};
+  Li7D1Trans D1Trans;
+
   
   //double decayMatrix[2 * excitedStatesF + 1][8]; // shape: (2F' + 1) x 8
   //double exciteMatrix[8][2 * exciteStateF + 1];
@@ -45,8 +48,8 @@ int main(){
   double decayMatrix_1D [2 * excitedStateF + 1];
   int exciteMatrix_1D [8];
   // Get decayMatrix [2F'+1][8]
-  decayMatrix = calSpontEmission(excitedStateF);
-  
+  decayMatrix = calSpontEmission(excitedStateF, D1Trans);
+  //std::cout << decayMatrix << std::endl;
   // Get pump and repump matrix [3][2F'+1] & [5][2F'+1] 
   if(excitedStateF == 1){
     //pumpMatrix = D1Trans.F11;
@@ -71,7 +74,7 @@ int main(){
     for(int j = 0; j < 8; j++)
       decayMatrix_1D[i] += decayMatrix[i][j];
   }
-
+  
 
   // Sum excite matrix into [8][1]
   for(int i = 0; i < 8; i++){
@@ -104,20 +107,38 @@ int main(){
     }
     
   }
+
+  
+  
+  //std::string savePath = "../dat/";
+  //std::string fileName1 = "numInitState.csv";
+  //std::string f1 = "numGroundF1.csv";
+  //std::string f2 = "numGroundF1.csfdv";
+  //std::string filename2 = "numTargetState.csv";
+
+  
+  std::cout << "test" <<std::endl;
+  std::ofstream file1;
+  std::ofstream file2;
+  /*  
+  file1.open("numInitState.txt", std::ios::in);
+  file2.open("numTargetState.txt", std::ios::in);
+  
+  if(file1.is_open() && file2.is_open()){
+    for(int k = 0; k < numOfCycles; k++){
+      for(int i = 0; i < 8; i++)
+	file1 << groundStatesPop[k][i] << " ";
+      file1 << "\n";
+      for(int j = 0; j < 2 * excitedStateF + 1; j++)
+	file2 << excitedStatesPop[k][j] << " ";
+      file2 << "\n";
+    }
+  }
+  else
+    printf("Cannot open file to save data\n");
+  */
+  
+  return 0;
 }
 
-
-  // std::string path="../dat/";
-  // std::string fileName1="numInitState.csv";
-  // std::string fileName2="numTargetState.csv";
-
-  // std::ofstream file1;
-  // std::ofstream file2;
-
-  // file1.open(path + fileName1);
-  // file2.open(path + fileName2);
-
-  // for(int k = 0; k < numOfCycles; k++){
-  //   file1 << numInitState[k][0] << ", " << numInitState[k][1] << ", " << numInitState[k][2] << std::endl;
-  //   file2 << numTargetState[k][0] << ", " << numTargetState[k][1] << ", " << numTargetState[k][2] << ", " << numTargetState[k][3] << ", " << numTargetState[k][4] << ", " << numTargetState[k][0] << std::endl;
-  // }
+  
