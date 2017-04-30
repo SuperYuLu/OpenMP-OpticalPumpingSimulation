@@ -10,26 +10,24 @@
 // 
 // Created: Sun Apr 23 22:28:03 2017 (-0500)
 // Version: 0.1
-// Last-Updated: Sat Apr 29 14:44:16 2017 (-0500)
+// Last-Updated: Sun Apr 30 15:30:25 2017 (-0500)
 //           By: yulu
-//     Update #: 148
+//     Update #: 152
 // 
 
 #include <iostream>
-//#include <string>
 #include <cstdlib>
 #include <fstream>
-//#include <sstream>
 #include "main.h"
 #include "setValue.h"
 #include "transitionStrength.h"
 
 
 int main(int argc, char *argv[]){
-  int numOfCycles = (int)(totTime / tStep);
-  double groundStatesPop[numOfCycles][8] = {0.};
-  double excitedStatesPop[numOfCycles][2 * excitedStateF + 1] = {0.};
-  Li7D1Trans D1Trans;
+  int numOfCycles = (int)(totTime / tStep);  // Total num of simulatio cycles
+  double groundStatesPop[numOfCycles][8] = {0.};  // Ground state population at each step
+  double excitedStatesPop[numOfCycles][2 * excitedStateF + 1] = {0.};  //Excited state population
+  Li7D1Trans D1Trans;  // Relative transition strength for D1 line
 
   
   //double decayMatrix[2 * excitedStatesF + 1][8]; // shape: (2F' + 1) x 8
@@ -40,13 +38,13 @@ int main(int argc, char *argv[]){
   // for(int i = 0; i < 3; i++) pumpMatrix[i] = new int[2 * excitedStateF + 1];
   // for(int i = 0; i < 5; i++) repumpMatrix[i]  = new int[2 * excitedStateF + 1];
 
-  int (*pumpMatrix)[2 * excitedStateF + 1];
-  int (*repumpMatrix)[2 * excitedStateF + 1];
+  int (*pumpMatrix)[2 * excitedStateF + 1];  // pump Matrix 
+  int (*repumpMatrix)[2 * excitedStateF + 1];  // repump matrix
   //double (*decayMatrix)[2 * excitedStateF + 1];
-  double **decayMatrix;
-  int exciteMatrix[8][2 * excitedStateF + 1];
-  double decayMatrix_1D [2 * excitedStateF + 1];
-  int exciteMatrix_1D [8];
+  double **decayMatrix;  // Matrix for decay transition
+  int exciteMatrix[8][2 * excitedStateF + 1];  // combined matrix for pump and repump 
+  double decayMatrix_1D [2 * excitedStateF + 1]; // reduced 1D decay matrix 
+  int exciteMatrix_1D [8]; // Reduced 1d excite matrix 
   // Get decayMatrix [2F'+1][8]
   decayMatrix = calSpontEmission(excitedStateF, D1Trans);
   //std::cout << decayMatrix << std::endl;
