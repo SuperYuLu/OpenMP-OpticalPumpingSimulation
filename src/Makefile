@@ -5,14 +5,15 @@ CFLAGS = -c
 
 #Files
 EXE = run
-SRCS = main.cc
+SRCS = main.cc 
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
-HEADS = Li7DLine.h
+HEADS = Li7DLine.h main.h
 
 #Rules
 $(EXE): $(OBJS)
 	$(CC) $^ -o $@
-main.o: main.cc Li7DLine.h
+
+main.o: main.cc main.h Li7DLine.h setValues.h
 	$(CC) $(CFLAGS) $<
 
 #Phony targets

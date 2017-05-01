@@ -9,9 +9,9 @@
 // 
 // Created: Sun Apr 30 16:56:30 2017 (-0500)
 // Version: 
-// Last-Updated: Sun Apr 30 18:00:01 2017 (-0500)
+// Last-Updated: Sun Apr 30 18:56:00 2017 (-0500)
 //           By: yulu
-//     Update #: 11
+//     Update #: 12
 // 
 
 #ifndef LIDLINE_H
@@ -26,8 +26,8 @@ struct Ground1Excited1{ // [mf'][mf]
 
 struct Ground1Excited2{ // [mf'][mf]
   int sigmaPlus[5][3] = {{0, 0, 0}, {0, 0, 0}, {1, 0, 0}, {0, 3, 0}, {0, 0, 6}};
-  int sigmaMinus[5][5] = {{6, 0, 0}, {0, 3, 0}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}};
-  int pi[5][5] = {{0, 0, 0}, {3, 0, 0}, {0, 4, 0}, {0, 0, 3}, {0, 0, 0}};
+  int sigmaMinus[5][3] = {{6, 0, 0}, {0, 3, 0}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}};
+  int pi[5][3] = {{0, 0, 0}, {3, 0, 0}, {0, 4, 0}, {0, 0, 3}, {0, 0, 0}};
 };
 
 struct Ground2Excited1{ //[mf'][mf]
