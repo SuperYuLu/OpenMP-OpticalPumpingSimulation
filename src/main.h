@@ -9,10 +9,11 @@
 // 
 // Created: Sun Apr 30 21:32:11 2017 (-0500)
 // Version: 
-// Last-Updated: Sun Apr 30 23:28:15 2017 (-0500)
+// Last-Updated: Mon May  1 23:51:43 2017 (-0500)
 //           By: yulu
-//     Update #: 79
+//     Update #: 83
 //
+
 #include <iostream>
 
 // Reduce (sum) matrix to row/column
@@ -64,6 +65,19 @@ double* matrixMulti(double (& pop)[m], int (& trans)[n][s]){
       	res[j] = pop[i] * (double)trans[i][j];
       }
     }
+  }
+  return res;
+}
+
+template <int m>
+double* matrixMulti(double (& pop)[m], int** trans, int s){
+  double* res = new double [s];
+  
+  for(int j = 0; j < s; j++){
+    for(int i = 0; i < m; i ++){
+      res[j] = pop[i] * (double)trans[i][j];
+    }
+ 
   }
   return res;
 }

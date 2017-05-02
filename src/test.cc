@@ -9,9 +9,9 @@
 // 
 // Created: Sun Apr 30 19:31:03 2017 (-0500)
 // Version: 
-// Last-Updated: Sun Apr 30 22:49:17 2017 (-0500)
+// Last-Updated: Tue May  2 10:48:48 2017 (-0500)
 //           By: yulu
-//     Update #: 35
+//     Update #: 45
 // 
 
 #include <iostream>
@@ -26,7 +26,7 @@ void  myfunc(int (&m)[x][y]){
 
 int main(){
   int a[][2] = {{1,2},{3,4}, {5,6}};
-  int b[3][2];
+  int b[3][2] = {{1,2},{3,4}, {5,6}};
   int *p;
   int **m;
   p = &(a[0][0]);
@@ -35,8 +35,7 @@ int main(){
   m = new int*[3];
   for (int i = 0; i < 3; i ++){
     m[i] = new int[2];
-    for (int j = 0; j < 2; j ++){
-      m[i][j] = i + j;
-    }
   }
+  b = a;
+  
 }
