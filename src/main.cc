@@ -9,12 +9,13 @@
 // 
 // Created: Sun Apr 30 17:46:08 2017 (-0500)
 // Version: 
-// Last-Updated: Tue May  2 11:08:35 2017 (-0500)
+// Last-Updated: Tue May  2 13:48:48 2017 (-0500)
 //           By: yulu
-//     Update #: 103
+//     Update #: 116
 //
 
 #include <iostream>
+#include <fstream>
 #include "main.h"
 #include "Li7DLine.h"
 #include "setValues.h"
@@ -57,8 +58,16 @@ int main(int argc, char *argv[]){
   int (*pumpGroundF2_sigmaPlus)[5];
   int (*pumpGroundF2_sigmaMinus)[5];
   int (*pumpGroundF2_pi)[5];
-  
 
+
+  
+  std::ofstream fileG1;
+  std::ofstream fileG2;
+  std::ofstream fileE;
+  fileG1.open("../dat/groundState_F1_population.csv");
+  fileG2.open("../dat/groundState_F2_population.csv");
+  fileE.open("../dat/excitedState_population.csv");
+ 
   if(excitedF == 2){
     pumpGroundF1_reduce_sigmaPlus  = reduceMatrix(DLine.D1.G1E2.sigmaPlus,1);
     pumpGroundF1_reduce_sigmaMinus  = reduceMatrix(DLine.D1.G1E2.sigmaMinus,1);
@@ -113,6 +122,7 @@ int main(int argc, char *argv[]){
   }
   // asume F' = 2
   for(int n = 0; n < numCycles - 1; n++){
+    std::cout << "Cycle: " << n << std::endl;
     
     if(n == 0) {//initialize
       for (int i = 0; i < 3; i++){
@@ -132,35 +142,35 @@ int main(int argc, char *argv[]){
     else{
 
       for(int i = 0; i < 3; i++){
-	popGroundF1[i] = popGroundF1_last[i] - popGroundF1_last[i] * pumpGroundF1_reduce_sigmaPlus[i];
+	popGroundF1[i] = popGroundF1_last[i] - popGroundF1_last[i] * pumpGroundF1_reduce_sigmaPlus[i] * dipoleElement;
 	for(int j = 0; j < numExcitedMf; j ++){
 	  popGroundF1[i] += \
-	    + popExcited[j] * pumpGroundF1_sigmaPlus[j][i]	\
-	    + popExcited[j] * pumpGroundF1_sigmaMinus[j][i]	\
-	    + popExcited[j] * pumpGroundF1_pi[j][i];
+	    + popExcited[j] * pumpGroundF1_sigmaPlus[j][i]* tStep * dipoleElement	\
+	    + popExcited[j] * pumpGroundF1_sigmaMinus[j][i] * tStep * dipoleElement	\
+	    + popExcited[j] * pumpGroundF1_pi[j][i] * tStep * dipoleElement;
 	}
       
       }
 
       for(int i = 0; i < 5; i++){
-	popGroundF2[i] = popGroundF2_last[i] - popGroundF2_last[i] * pumpGroundF2_reduce_sigmaPlus[i];
+	popGroundF2[i] = popGroundF2_last[i] - popGroundF2_last[i] * pumpGroundF2_reduce_sigmaPlus[i] * tStep * dipoleElement;
 	for(int j = 0; j < numExcitedMf; j ++){
 	  popGroundF2[i] += \
-	    + popExcited[j] * pumpGroundF2_sigmaPlus[j][i]	\
-	    + popExcited[j] * pumpGroundF2_sigmaMinus[j][i]	\
-	    + popExcited[j] * pumpGroundF2_pi[j][i];
+	    + popExcited[j] * pumpGroundF2_sigmaPlus[j][i] * tStep * dipoleElement	\
+	    + popExcited[j] * pumpGroundF2_sigmaMinus[j][i] * tStep * dipoleElement	\
+	    + popExcited[j] * pumpGroundF2_pi[j][i] * tStep * dipoleElement;
 	}
       }
 
       for(int i = 0; i < numExcitedMf; i++){
 	for(int j = 0; j < 3; j++){
-	  popExcited[i] = popExcited_last[i] + popGroundF1_last[j] * pumpGroundF1_sigmaPlus[i][j];
+	  popExcited[i] = popExcited_last[i] + popGroundF1_last[j] * pumpGroundF1_sigmaPlus[i][j] * tStep * dipoleElement;
 	}
 	for(int j = 0; j < 5; j++){
-	  popExcited[i] += popGroundF2_last[j] * pumpGroundF2_sigmaPlus[i][j];
+	  popExcited[i] += popGroundF2_last[j] * pumpGroundF2_sigmaPlus[i][j] * tStep * dipoleElement;
 	}
 
-	popExcited[i] += popExcited_last[i] * \
+	popExcited[i] += popExcited_last[i] * tStep * dipoleElement *\
 	  (decayGroundF1_reduce_sigmaPlus[i]\
 	   + decayGroundF1_reduce_sigmaMinus[i]\
 	   + decayGroundF1_reduce_pi[i]\
@@ -169,9 +179,31 @@ int main(int argc, char *argv[]){
 	   + decayGroundF2_reduce_pi[i]);	    
       }
     }	   
-      
 
+    // Write into files
+    for(int i = 0; i < 3; i++){
+      fileG1 << popGroundF1[i] << " ";
+      popGroundF1_last[i] = popGroundF1[i];
+    }
+    fileG1 << "\n";
+
+    for(int i = 0; i < 5; i++){
+      fileG2 << popGroundF2[i] << " ";
+      popGroundF2_last[i] = popGroundF2[i];
+    }
+    fileG2 << "\n";
+
+    for(int i = 0; i < numExcitedMf; i++){
+      fileE << popExcited[i] << " ";
+      popExcited_last[i] = popExcited[i];
+    }
+    fileE << "\n";
   }
+
+  fileG1.close();
+  fileG2.close();
+  fileE.close();
+    
 
     /*
 
