@@ -9,19 +9,26 @@
 // 
 // Created: Sun Apr 30 18:45:23 2017 (-0500)
 // Version: 
-// Last-Updated: Tue May  2 13:52:38 2017 (-0500)
+// Last-Updated: Wed May  3 01:42:22 2017 (-0500)
 //           By: yulu
-//     Update #: 23
+//     Update #: 61
 //
 
 #ifndef SETVALUE_H
 #define SETVALUE_H
 
 extern int const excitedF = 2;
+extern double const pi = 3.1415926;
+//extern double const gamma = 37.196457e6;
+extern double const gamma = 36.898e6; // From 6Li D1/D2 line
+extern double const plankConst = 1.054571e-34;
 extern double const lifeTime = 27e-9; // [s]
-extern double const tStep = 0.1 * lifeTime; // [s]
-extern double const totTime = 2e-6; // [s]
-extern double const dipoleElement = 2.537e-29; 
-//extern double const dipoleElement = 1; 
+
+extern double const lightInten = 0.1e-3; // [W]
+extern double const tStep = 1e-9; // [s]
+extern double const totTime = 10e-6; // [s]
+extern double const dipoleElement = 3.977e-29;  // [C dot m] For 6Li D2 line
+//extern double const dipoleElement = 2.537e-29;  // For Rb87
+
 #endif
 
