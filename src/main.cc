@@ -9,9 +9,9 @@
 // 
 // Created: Sun Apr 30 17:46:08 2017 (-0500)
 // Version: 
-// Last-Updated: Wed May  3 01:33:59 2017 (-0500)
+// Last-Updated: Wed May  3 10:23:26 2017 (-0500)
 //           By: yulu
-//     Update #: 156
+//     Update #: 159
 //
 
 #include <iostream>
@@ -131,7 +131,8 @@ int main(int argc, char *argv[]){
   }
 
   scaleFactor = gamma / einsteinA;
-  pumpOverallFactor = dipoleElement * dipoleElement * lightInten * pi / ( 2 * plankConst * plankConst) * tStep;
+  // ======================> Check here <=====================
+  pumpOverallFactor = dipoleElement * dipoleElement * lightInten * pi / ( 2 * plankConst * plankConst) * tStep / (saturationLightInten + lightInten);
   decayOverallFactor =  dipoleElement * dipoleElement  * tStep * scaleFactor;
   std::cout << "Scale factor: " << scaleFactor << std::endl;
 

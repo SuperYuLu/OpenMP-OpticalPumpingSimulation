@@ -9,9 +9,9 @@
 # 
 # Created: Tue May  2 13:06:41 2017 (-0500)
 # Version: 
-# Last-Updated: Wed May  3 01:32:54 2017 (-0500)
+# Last-Updated: Wed May  3 09:36:06 2017 (-0500)
 #           By: yulu
-#     Update #: 33
+#     Update #: 34
 # 
 
 import numpy as np
