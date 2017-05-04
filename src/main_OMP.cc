@@ -204,7 +204,7 @@ int main(int argc, char *argv[]){
 	      if(popGroundF2[i] < 0){
 		groundF2Empty[i] = true;
 		popGroundF2[i] = 0;
-		std::cout << "Negative! F2 "<< n << "," << i << std::endl;
+		//std::cout << "Negative! F2 "<< n << "," << i << std::endl;
 	      }
 	
 	      for(int j = 0; j < numExcitedMf; j ++){
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]){
 
 
 # pragma omp barrier
-	omp_set_num_threads(numExcitedMf);
+	
 # pragma omp for schedule(static,1)
 	// Update excited state
 	for(int i = 0; i < numExcitedMf; i++){

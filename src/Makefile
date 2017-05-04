@@ -1,27 +1,30 @@
 # Options
+
 # For gnu compiler
-CC = g++
-DEBUG = -g
-CFLAGS = -c -fopenmp
+#CC = g++
+#DEBUG = -g
+#CFLAGS = -c -fopenmp
+
 # For intel compiler
-#CC = icpc
-#CFLAGS = -c -openmp
+CC = icpc
+CFLAGS = -xHost -qopenmp  -c 
+OFLAGS = -xHost -qopenmp  -o
 
 #Files
 EXE = run
-SRCS = main_OMP.cc 
+SRCS = main.cc 
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
 HEADS = Li7DLine.h main.h
 
 #Rules
 $(EXE): $(OBJS)
-	$(CC) $^ -o $@
+	$(CC) $^ $(OFLAGS) $@
 
-main_OMP.o: main_OMP.cc main.h Li7DLine.h setValues.h
+main.o: main.cc main.h Li7DLine.h setValues.h
 	$(CC) $(CFLAGS) $<
 
 #Phony targets
 plot:
-	python3 plotPopulation.py
+	python plotPopulation.py
 clean:
 	rm *.o *~

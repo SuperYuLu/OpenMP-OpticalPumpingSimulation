@@ -20,7 +20,7 @@
 #include "Li7DLine.h"
 #include "setValues.h"
 int main(int argc, char *argv[]){
-  LiDLine DLine;
+  //LiDLine DLine;
   int numExcitedMf = 2 * excitedF + 1;
   int numCycles = (int)(totTime / tStep);
 

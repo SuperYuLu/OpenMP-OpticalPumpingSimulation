@@ -15,6 +15,8 @@
 # 
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import re
 
@@ -29,7 +31,7 @@ tStep = float(re.findall('\d.+', re.findall('tStep = \d.+\d', content)[0])[0])
 
 
 
-plt.figure()
+plt.figure(1)
 
 plt.subplot(111)
 #tStep = 1e-9
@@ -43,6 +45,7 @@ plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileG1[:-4])
+plt.savefig('../dat/groundStateF1Population.png')
 
 plt.figure()
 plt.subplot(111)
@@ -56,12 +59,14 @@ plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileG2[:-4])
+plt.savefig('../dat/groundStateF2Population.png')
+
 
 plt.figure()
 plt.subplot(111)
 
 data = np.genfromtxt(path + fileE, delimiter = ' ')
-print(data.shape[1])
+
 if data.shape[1] == 5:
     plt.plot(t,data[:,0], label = 'F=2, mf = -2')
     plt.plot(t,data[:,1], label = 'F=2, mf = -1')
@@ -72,12 +77,13 @@ elif data.shape[1] == 3:
     plt.plot(t,data[:,0], label = 'F=1, mf = -1')
     plt.plot(t,data[:,1], label = 'F=1, mf = 0')
     plt.plot(t,data[:,2], label = 'F=1, mf = 1')
+
 plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileE[:-4])
-
-plt.show()
+plt.savefig('../dat/excitedStatePopulation.png')
+#plt.show()
 
 
 
