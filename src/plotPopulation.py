@@ -9,9 +9,9 @@
 # 
 # Created: Tue May  2 13:06:41 2017 (-0500)
 # Version: 
-# Last-Updated: Wed May  3 23:00:15 2017 (-0500)
+# Last-Updated: Thu May  4 09:39:59 2017 (-0500)
 #           By: yulu
-#     Update #: 38
+#     Update #: 46
 # 
 
 import numpy as np
@@ -59,12 +59,19 @@ plt.title(fileG2[:-4])
 
 plt.figure()
 plt.subplot(111)
+
 data = np.genfromtxt(path + fileE, delimiter = ' ')
-plt.plot(t,data[:,0], label = 'F=2, mf = -2')
-plt.plot(t,data[:,1], label = 'F=2, mf = -1')
-plt.plot(t,data[:,2], label = 'F=2, mf = 0')
-plt.plot(t,data[:,3], label = 'F=2, mf = 1')
-plt.plot(t,data[:,4], label = 'F=2, mf = 2')
+print(data.shape[1])
+if data.shape[1] == 5:
+    plt.plot(t,data[:,0], label = 'F=2, mf = -2')
+    plt.plot(t,data[:,1], label = 'F=2, mf = -1')
+    plt.plot(t,data[:,2], label = 'F=2, mf = 0')
+    plt.plot(t,data[:,3], label = 'F=2, mf = 1')
+    plt.plot(t,data[:,4], label = 'F=2, mf = 2')
+elif data.shape[1] == 3:
+    plt.plot(t,data[:,0], label = 'F=1, mf = -1')
+    plt.plot(t,data[:,1], label = 'F=1, mf = 0')
+    plt.plot(t,data[:,2], label = 'F=1, mf = 1')
 plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
