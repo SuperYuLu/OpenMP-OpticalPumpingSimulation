@@ -1,7 +1,8 @@
 // main.h --- 
 // 
 // Filename: main.h
-// Description: 
+// Description:
+//            Reduce (sum) matrix to row/column
 // 
 // Author:    Yu Lu
 // Email:     yulu@utexas.edu
@@ -9,14 +10,13 @@
 // 
 // Created: Sun Apr 30 21:32:11 2017 (-0500)
 // Version: 
-// Last-Updated: Mon May  1 23:51:43 2017 (-0500)
+// Last-Updated: Wed May  3 23:36:48 2017 (-0500)
 //           By: yulu
-//     Update #: 83
+//     Update #: 86
 //
 
-#include <iostream>
 
-// Reduce (sum) matrix to row/column
+
 template<int nRow, int nCol>
 int*  reduceMatrix(int (&mIn)[nRow][nCol], int direction){
   int sum;
@@ -43,57 +43,7 @@ int*  reduceMatrix(int (&mIn)[nRow][nCol], int direction){
 }
 
 
-// Transpose Matrix
-template <int m, int n>
-int **transMatrix(int (&mIn)[m][n]){
-  int **mTrans = 0;
-  mTrans = new int*[n];
-  for(int i = 0; i < n; i++){
-    mTrans[i] = new int[m];
-    for(int j = 0; j < m; j++)  mTrans[i][j] = mIn[j][i];
-  }
-  return mTrans;
-}
-      
-// Matrix multiply
-template <int m, int n, int s>
-double* matrixMulti(double (& pop)[m], int (& trans)[n][s]){
-  double* res = new double [s];
-  if(m == n){
-    for(int j = 0; j < s; j++){
-      for(int i = 0; i < m; i ++){
-      	res[j] = pop[i] * (double)trans[i][j];
-      }
-    }
-  }
-  return res;
-}
 
-template <int m>
-double* matrixMulti(double (& pop)[m], int** trans, int s){
-  double* res = new double [s];
-  
-  for(int j = 0; j < s; j++){
-    for(int i = 0; i < m; i ++){
-      res[j] = pop[i] * (double)trans[i][j];
-    }
- 
-  }
-  return res;
-}
-
-// Vector multiply
-template <int m, int n>
-double* vectorMulti(double (& pop)[m], int (& trans1D)[n]){
-  double* res = new double[m];
-  if (m == n){
-    for (int i = 0; i < m; i ++){
-      res[i] = pop[i] * trans1D[i];
-    }
-  }
-
-  return res;
-}
   
 	
   

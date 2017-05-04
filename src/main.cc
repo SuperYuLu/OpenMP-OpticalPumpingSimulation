@@ -9,9 +9,9 @@
 // 
 // Created: Sun Apr 30 17:46:08 2017 (-0500)
 // Version: 
-// Last-Updated: Wed May  3 10:23:26 2017 (-0500)
+// Last-Updated: Wed May  3 23:37:22 2017 (-0500)
 //           By: yulu
-//     Update #: 159
+//     Update #: 236
 //
 
 #include <iostream>
@@ -60,6 +60,11 @@ int main(int argc, char *argv[]){
   double decayOverallFactor;
 
   double einsteinA, scaleFactor;
+
+  bool groundF1Empty[3] = {false};
+  bool groundF2Empty[5] = {false};
+
+  double sum1, sum2, sum3;
   
   std::ofstream fileG1;
   std::ofstream fileG2;
@@ -125,26 +130,27 @@ int main(int argc, char *argv[]){
 
   einsteinA = 0.0;
   for(int k = 0; k < numExcitedMf; k++){
-    einsteinA += dipoleElement * dipoleElement * (\
-      decayGroundF2_reduce_sigmaPlus[k] + decayGroundF2_reduce_sigmaMinus[k] +  decayGroundF2_reduce_pi[k]\
+    einsteinA += dipoleElement * dipoleElement * (			
+        decayGroundF2_reduce_sigmaPlus[k] + decayGroundF2_reduce_sigmaMinus[k] +  decayGroundF2_reduce_pi[k]\
       + decayGroundF1_reduce_sigmaPlus[k] + decayGroundF1_reduce_sigmaMinus[k] + decayGroundF1_reduce_pi[k]);
   }
 
   scaleFactor = gamma / einsteinA;
-  // ======================> Check here <=====================
-  pumpOverallFactor = dipoleElement * dipoleElement * lightInten * pi / ( 2 * plankConst * plankConst) * tStep / (saturationLightInten + lightInten);
+  pumpOverallFactor = dipoleElement * dipoleElement * lightInten * pi / ( 2 * plankConst * plankConst) * tStep; //
+  
   decayOverallFactor =  dipoleElement * dipoleElement  * tStep * scaleFactor;
-  std::cout << "Scale factor: " << scaleFactor << std::endl;
+  
 
   
-  // asume F' = 2
+  // assume F' = 2
   for(int n = 0; n < numCycles - 1; n++){
-    //std::cout << "Cycle: " << n << std::endl;
-    
-    if(n == 0) {//initialize
+
+    //initialize
+    if(n == 0) {
       for (int i = 0; i < 3; i++){
 	popGroundF1[i] = 1.0 / 8.0;
 	popGroundF1_last[i] = popGroundF1[i];
+      }
       for (int i = 0; i < 5; i++){
 	popGroundF2[i] = 1.0 / 8.0;
 	popGroundF2_last[i] = popGroundF2[i];
@@ -153,42 +159,80 @@ int main(int argc, char *argv[]){
 	popExcited[i] = 0.0;
 	popExcited_last[i] = popExcited[i];
       }    
-      }
-    }
+    }  
+    
 
     else{
-
+      
+      // Update ground state F = 1
       for(int i = 0; i < 3; i++){
 	popGroundF1[i] = popGroundF1_last[i] - popGroundF1_last[i] * pumpGroundF1_reduce_sigmaPlus[i] * pumpOverallFactor;
+	
+	if(popGroundF1[i] < 0){
+	  groundF1Empty[i] = true;
+	  popGroundF1[i] = 0;
+	  std::cout << "Negative! F1 " << n << "," << i << std::endl;
+	}
+	
 	for(int j = 0; j < numExcitedMf; j ++){
 	  popGroundF1[i] += \
 	    + popExcited_last[j] * pumpGroundF1_sigmaPlus[j][i] * decayOverallFactor\
 	    + popExcited_last[j] * pumpGroundF1_sigmaMinus[j][i]  * decayOverallFactor	\
 	    + popExcited_last[j] * pumpGroundF1_pi[j][i]  * decayOverallFactor;
 	}
-	if(popGroundF1[i] < 0) popGroundF1[i] = 0;
+	
       }
 
+      // Update ground state F=2
       for(int i = 0; i < 5; i++){
-	popGroundF2[i] = popGroundF2_last[i] - popGroundF2_last[i] * pumpGroundF2_reduce_sigmaPlus[i]  * pumpOverallFactor;
+	popGroundF2[i] = popGroundF2_last[i] - popGroundF2_last[i] * pumpGroundF2_reduce_sigmaPlus[i]  * pumpOverallFactor / intensityRatio; 
+
+	if(popGroundF2[i] < 0){
+	  groundF2Empty[i] = true;
+	  popGroundF2[i] = 0;
+	  std::cout << "Negative! F2 "<< n << "," << i << std::endl;
+	}
+	
 	for(int j = 0; j < numExcitedMf; j ++){
 	  popGroundF2[i] += \
 	    + popExcited_last[j] * pumpGroundF2_sigmaPlus[j][i]  * decayOverallFactor	\
 	    + popExcited_last[j] * pumpGroundF2_sigmaMinus[j][i]  * decayOverallFactor	\
 	    + popExcited_last[j] * pumpGroundF2_pi[j][i]  * decayOverallFactor;
 	}
-	if(popGroundF2[i] < 0) popGroundF2[i] = 0;
+	
       }
 
+
+      // Update excited state 
       for(int i = 0; i < numExcitedMf; i++){
 	popExcited[i] = popExcited_last[i];
-	for(int j = 0; j < 3; j++){
-	  popExcited[i] += popGroundF1_last[j] * pumpGroundF1_sigmaPlus[i][j]  * pumpOverallFactor;
+	
+	// receive  from ground state F = 1
+	// check ground F =1, mf = -1, 0, 1  empty status 
+	if((i == excitedF) && groundF1Empty[0]) popExcited[i] += popGroundF1_last[0]; 
+	else if((i == (excitedF + 1)) && groundF1Empty[1]) popExcited[i] += popGroundF1_last[1];
+	else if((i == (excitedF + 2)) && groundF1Empty[2]) popExcited[i] += popGroundF1_last[2];
+	else{ // if not empty
+	  for(int j = 0; j < 3; j++){
+	    popExcited[i] += popGroundF1_last[j] * pumpGroundF1_sigmaPlus[i][j]  * pumpOverallFactor;
+	  }
 	}
-	for(int j = 0; j < 5; j++){
-	  popExcited[i] += popGroundF2_last[j] * pumpGroundF2_sigmaPlus[i][j]  * pumpOverallFactor;
+	
+      	// receive from ground state F = 2
+	// check ground F =2, mf = -2, -1, 0, 1, 2  empty status 
+	if ((i == (excitedF - 1)) && groundF2Empty[0]) popExcited[i] += popGroundF2_last[0];
+	else if ((i == (excitedF )) && groundF2Empty[1]) popExcited[i] += popGroundF2_last[1];
+	else if ((i == (excitedF + 1)) && groundF2Empty[2]) popExcited[i] += popGroundF2_last[2];
+	else if ((i == (excitedF + 2)) && groundF2Empty[3]) popExcited[i] += popGroundF2_last[3];
+	else if ((i == (excitedF + 3)) && groundF2Empty[4]) popExcited[i] += popGroundF2_last[4];
+	else{
+	  for(int j = 0; j < 5; j++){
+	    popExcited[i] += popGroundF2_last[j] * pumpGroundF2_sigmaPlus[i][j]  * pumpOverallFactor /intensityRatio;
+	  }
 	}
 
+	
+	// Spontaneous decay [loss]
 	popExcited[i] += -popExcited_last[i]  * decayOverallFactor *\
 	  (decayGroundF1_reduce_sigmaPlus[i]\
 	   + decayGroundF1_reduce_sigmaMinus[i]\
@@ -196,21 +240,61 @@ int main(int argc, char *argv[]){
 	   + decayGroundF2_reduce_sigmaPlus[i]\
 	   + decayGroundF2_reduce_sigmaMinus[i]\
 	   + decayGroundF2_reduce_pi[i]);
-	 if(popExcited[i] < 0) popExcited[i] = 0;
-      }
-     
-    } // end for else
+	
+	if(popExcited[i] < 0){
+	  popExcited[i] = 0;
+	  //std::cout << "Negative!" << std::endl;
+	}
+	
+      } // End updating excited states
 
+    } // end for else 
+
+
+
+    
+    // Atom number conservation check
+    sum1 = 0.0;
+    sum2 = 0.0;
+    sum3 = 0.0;
+
+    //std::cout << "G F=1:  ";
+    for(int i = 0; i < 3; i++){
+      sum1 += popGroundF1[i] - popGroundF1_last[i];
+      //std::cout << popGroundF1[i];
+    }
+    //std::cout << std::endl;
+
+    //std::cout << "G F=2:  ";
+    for(int i = 0; i < 5; i++){
+      sum2 += popGroundF2[i] - popGroundF2_last[i];
+      //std::cout << popGroundF2[i];
+    }
+    //std::cout << std::endl;
+
+    //std::cout << "E :  ";
+    for(int i = 0; i < numExcitedMf; i ++){
+      sum3 += popExcited[i] - popExcited_last[i];
+      //std::cout << popExcited[i];
+    }
+    //std::cout << std::endl;
+    
+    //std::cout << "G F1 / G F2 /E F2 increased / G increased  " << sum1 << "/" << sum2 << "/" << sum3<< "/" << sum1 + sum2 << std::endl;
+
+
+    
     // Write into files
     for(int i = 0; i < 3; i++){
       fileG1 << popGroundF1[i] << " ";
       popGroundF1_last[i] = popGroundF1[i];
+      groundF1Empty[i] = false; // reset state empty indicator
     }
     fileG1 << "\n";
 
     for(int i = 0; i < 5; i++){
       fileG2 << popGroundF2[i] << " ";
       popGroundF2_last[i] = popGroundF2[i];
+      groundF2Empty[i]= false; // reset state empty indicator 
     }
     fileG2 << "\n";
 
@@ -219,7 +303,11 @@ int main(int argc, char *argv[]){
       popExcited_last[i] = popExcited[i];
     }
     fileE << "\n";
-  } // end for loop n
+    
+    
+    
+    
+  }// end for loop n
 
   fileG1.close();
   fileG2.close();
