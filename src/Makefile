@@ -1,11 +1,15 @@
 # Options
+# For gnu compiler
 CC = g++
 DEBUG = -g
-CFLAGS = -c
+CFLAGS = -c -fopenmp
+# For intel compiler
+#CC = icpc
+#CFLAGS = -c -openmp
 
 #Files
 EXE = run
-SRCS = main.cc 
+SRCS = main_OMP.cc 
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
 HEADS = Li7DLine.h main.h
 
@@ -13,7 +17,7 @@ HEADS = Li7DLine.h main.h
 $(EXE): $(OBJS)
 	$(CC) $^ -o $@
 
-main.o: main.cc main.h Li7DLine.h setValues.h
+main_OMP.o: main_OMP.cc main.h Li7DLine.h setValues.h
 	$(CC) $(CFLAGS) $<
 
 #Phony targets
