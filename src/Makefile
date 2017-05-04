@@ -12,7 +12,7 @@ OFLAGS = -xHost -qopenmp  -o
 
 #Files
 EXE = run
-SRCS = main.cc 
+SRCS = main_OMP.cc 
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
 HEADS = Li7DLine.h main.h
 
@@ -20,7 +20,7 @@ HEADS = Li7DLine.h main.h
 $(EXE): $(OBJS)
 	$(CC) $^ $(OFLAGS) $@
 
-main.o: main.cc main.h Li7DLine.h setValues.h
+main_OMP.o: main_OMP.cc main.h Li7DLine.h setValues.h
 	$(CC) $(CFLAGS) $<
 
 #Phony targets

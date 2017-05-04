@@ -20,8 +20,11 @@
 #include "main.h"
 #include "Li7DLine.h"
 #include "setValues.h"
+
+
+
 int main(int argc, char *argv[]){
-  LiDLine DLine;
+  double t1, t2;
   int numExcitedMf = 2 * excitedF + 1;
   int numCycles = (int)(totTime / tStep);
 
@@ -144,6 +147,7 @@ int main(int argc, char *argv[]){
 
   
   // assume F' = 2
+  t1 = omp_get_wtime();      
   for(int n = 0; n < numCycles - 1; n++){
 
     //initialize
@@ -169,11 +173,16 @@ int main(int argc, char *argv[]){
       
 # pragma omp parallel num_threads(2)
       {
-      
+# pragma omp single
+	{if (n == 1)
+
+	    std::cout << "Threads num for 1st parallel region: "<<omp_get_num_threads() << std::endl;
+
+	}
 # pragma omp parallel sections //private(i, j)
 	{
 
-
+	  
 # pragma omp section
 	  {
 	    for(int i = 0; i < 3; i++){
@@ -220,9 +229,20 @@ int main(int argc, char *argv[]){
 
 	} // End sections
 
-
-# pragma omp barrier
 	
+
+      } // End for paralle 
+# pragma omp parallel num_threads(numExcitedMf)
+      {
+
+# pragma omp single
+	{if (n == 1)
+
+	    std::cout << "Threads num for 2nd parallel region: "<<omp_get_num_threads() << std::endl;
+
+	  
+	}
+
 # pragma omp for schedule(static,1)
 	// Update excited state
 	for(int i = 0; i < numExcitedMf; i++){
@@ -268,7 +288,9 @@ int main(int argc, char *argv[]){
 	  }
 	
 	} // End updating excited states
+      
       } // end omp parallel
+      
     } // end for else 
 
 
@@ -327,13 +349,13 @@ int main(int argc, char *argv[]){
     
     
     
-    
+       
   }// end for loop n
-
-  fileG1.close();
-  fileG2.close();
-  fileE.close();
-      
+    t2 = omp_get_wtime();
+    fileG1.close();
+    fileG2.close();
+    fileE.close();
+    std::cout << "Total time for simulation cycles: " << t2 - t1 << std::endl;
  
   return 0;
 }
