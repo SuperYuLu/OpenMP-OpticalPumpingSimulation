@@ -15,6 +15,8 @@
 # 
 
 import numpy as np
+import matplotlib
+#matplotlib.use('GTKAgg')
 import matplotlib.pyplot as plt
 import re
 
@@ -43,6 +45,7 @@ plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileG1[:-4])
+plt.savefig('../dat/groundF1.png')
 
 plt.figure()
 plt.subplot(111)
@@ -56,6 +59,8 @@ plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileG2[:-4])
+plt.savefig('../dat/groundF2.png')
+
 
 plt.figure()
 plt.subplot(111)
@@ -76,7 +81,7 @@ plt.xlabel('Time [us]')
 plt.ylabel('Population')
 plt.legend()
 plt.title(fileE[:-4])
-
+plt.savefig('../dat/excited.png')
 plt.show()
 
 

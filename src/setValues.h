@@ -17,7 +17,7 @@
 #ifndef SETVALUE_H
 #define SETVALUE_H
 
-extern int const excitedF = 2;
+extern int const excitedF = 1;
 extern double const pi = 3.1415926;
 extern double const intensityRatio = 1;
 extern double const gamma = 36.898e6; // From 6Li D1/D2 line
