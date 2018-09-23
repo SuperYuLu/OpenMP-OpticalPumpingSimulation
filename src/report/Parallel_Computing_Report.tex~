@@ -1,9 +1,0 @@
-\documentclass[a4paper, 10pt]{article}
-\usepackage{color}
-\title{Paralle Computing Project Report \\ Yu Lu (EID: YL25684)}
-\date{\today}
-
-\begin{documen}
-\titlepage
-
-\end{document}
